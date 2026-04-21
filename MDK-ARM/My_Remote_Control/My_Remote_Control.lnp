@@ -1,0 +1,28 @@
+--cpu Cortex-M3
+"my_remote_control\startup_stm32f103xb.o"
+"my_remote_control\main.o"
+"my_remote_control\gpio.o"
+"my_remote_control\usart.o"
+"my_remote_control\stm32f1xx_it.o"
+"my_remote_control\stm32f1xx_hal_msp.o"
+"my_remote_control\stm32f1xx_hal_timebase_tim.o"
+"my_remote_control\stm32f1xx_hal_gpio_ex.o"
+"my_remote_control\stm32f1xx_hal_tim.o"
+"my_remote_control\stm32f1xx_hal_tim_ex.o"
+"my_remote_control\stm32f1xx_hal_uart.o"
+"my_remote_control\stm32f1xx_hal.o"
+"my_remote_control\stm32f1xx_hal_rcc.o"
+"my_remote_control\stm32f1xx_hal_rcc_ex.o"
+"my_remote_control\stm32f1xx_hal_gpio.o"
+"my_remote_control\stm32f1xx_hal_dma.o"
+"my_remote_control\stm32f1xx_hal_cortex.o"
+"my_remote_control\stm32f1xx_hal_pwr.o"
+"my_remote_control\stm32f1xx_hal_flash.o"
+"my_remote_control\stm32f1xx_hal_flash_ex.o"
+"my_remote_control\stm32f1xx_hal_exti.o"
+"my_remote_control\system_stm32f1xx.o"
+"my_remote_control\tjc_usart_hmi.o"
+--strict --scatter "My_Remote_Control\My_Remote_Control.sct"
+--summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list "My_Remote_Control.map" -o My_Remote_Control\My_Remote_Control.axf
