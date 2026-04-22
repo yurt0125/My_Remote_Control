@@ -22,6 +22,8 @@ my_remote_control\tjc_usart_hmi.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx
 my_remote_control\tjc_usart_hmi.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_dma.h
 my_remote_control\tjc_usart_hmi.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_dma_ex.h
 my_remote_control\tjc_usart_hmi.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_cortex.h
+my_remote_control\tjc_usart_hmi.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_adc.h
+my_remote_control\tjc_usart_hmi.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_adc_ex.h
 my_remote_control\tjc_usart_hmi.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash.h
 my_remote_control\tjc_usart_hmi.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_ex.h
 my_remote_control\tjc_usart_hmi.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h

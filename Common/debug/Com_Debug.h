@@ -5,22 +5,18 @@
 #include "string.h"
 #include "stdio.h"
 
-#define DEBUG 1
+#define debug_printf printf
 
-#if(DEBUG == 1)
+ 
+#define RX_BUFFER_SIZE 256
+ 
+typedef struct {
+    uint8_t RxBuffer[RX_BUFFER_SIZE];
+    uint8_t RxData;
+    uint16_t RxDataCnt;
+}UART_RxTypeDef;
+ 
+extern UART_RxTypeDef Uart1Rx;   // 为UART1声明外部结构体变量
+ 
 
-#define FINENAME strrchr(__FILE__, '\\') ? (strrchr(__FILE__, '\\') + 1) : __FILE__
-
-#define debug_start() Com_Debug_Start()
-#define debug_printf(format, ...) printf("[%15s:%4d] -- " format, FINENAME, __LINE__ , ##__VA_ARGS__)
-#define debug_printfln(format, ...) printf("[%15s:%4d] -- " format "\r\n", FINENAME, __LINE__ , ##__VA_ARGS__)
-#else
-
-#define debug_start() 
-#define debug_printf(format, ...) 
-#define debug_printfln(format, ...) 
-
-#endif
-
-void Com_Debug_Start(void);
 #endif

@@ -7,34 +7,34 @@ void startTask(void *args);
 #define START_TASK_PRIORITY 10
 TaskHandle_t startTaskHandle;
 
-/*1.通讯任务*/
-void communicationTask(void *args);
-#define COMMUNICATION_TASK_NAME "communication_Task"
-#define COMMUNICATION_TASK_STACK 256
-#define COMMUNICATION_TASK_PRIORITY 8
-TaskHandle_t communicationTaskHandle;
-#define COMMUNICATION_EXEC_CYCLE 6
+///*1.通讯任务*/
+//void communicationTask(void *args);
+//#define COMMUNICATION_TASK_NAME "communication_Task"
+//#define COMMUNICATION_TASK_STACK 256
+//#define COMMUNICATION_TASK_PRIORITY 8
+//TaskHandle_t communicationTaskHandle;
+//#define COMMUNICATION_EXEC_CYCLE 6
 
-/*2.按键任务*/
-void keyTask(void *args);
-#define KEY_TASK_NAME "key_Task"
-#define KEY_TASK_STACK 256
-#define KEY_TASK_PRIORITY 7
-TaskHandle_t keyTaskHandle;
-#define KEY_EXEC_CYCLE 50
+///*2.按键任务*/
+//void keyTask(void *args);
+//#define KEY_TASK_NAME "key_Task"
+//#define KEY_TASK_STACK 256
+//#define KEY_TASK_PRIORITY 7
+//TaskHandle_t keyTaskHandle;
+//#define KEY_EXEC_CYCLE 50
 
-/*3.摇杆任务*/
-void joystickTask(void *args);
-#define Joy_Stick_TASK_NAME "joystick_Task"
-#define Joy_Stick_TASK_STACK 256
-#define Joy_Stick_TASK_PRIORITY 7
-TaskHandle_t joystickTaskHandle;
-#define Joy_Stick_EXEC_CYCLE 10
+///*3.摇杆任务*/
+//void joystickTask(void *args);
+//#define Joy_Stick_TASK_NAME "joystick_Task"
+//#define Joy_Stick_TASK_STACK 256
+//#define Joy_Stick_TASK_PRIORITY 7
+//TaskHandle_t joystickTaskHandle;
+//#define Joy_Stick_EXEC_CYCLE 10
 
 /*4.显示任务*/
 void displayTask(void *args);
-#define Display_TASK_NAME "diaplay_Task"
-#define Display_TASK_STACK 256
+#define Display_TASK_NAME "display_Task"
+#define Display_TASK_STACK 512
 #define Display_TASK_PRIORITY 7
 TaskHandle_t displayTaskHandle;
 #define Display_EXEC_CYCLE 7
@@ -45,16 +45,17 @@ TaskHandle_t displayTaskHandle;
  */
 void App_Task_FreeRTOSStart(void)
 {
+	/* 先点亮 PC13（低电平亮），避免后续任务创建失败时看不到状态 */
+	HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, GPIO_PIN_RESET);
+
     /*1.初始化debug模块*/
     debug_start();
 	
 		debug_printfln("无人机--遥控初始化开始");
 	
     /*2.启动通讯模块*/
-		App_Communication_Start();
 	
     /*3.启动数据处理模块*/
-		App_DataProcess_Start();
 
     /*4.启动显示模块*/
 		App_Display_Start();
@@ -83,6 +84,8 @@ void App_Task_FreeRTOSStart(void)
 void startTask(void *args)
 {
     debug_printfln("启动任务开始执行：开始调度");
+	/* 确保 PC13 为低电平（LED 亮） */
+	HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, GPIO_PIN_RESET);
 	
 		/*1.创建通讯任务*/
 		// xTaskCreate(communicationTask,

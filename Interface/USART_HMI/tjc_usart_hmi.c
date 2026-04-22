@@ -87,11 +87,9 @@ void intToStr(int num, char* str) {
 void uart_send_char(char ch)
 {
 	uint8_t ch2 = (uint8_t)ch;
-    //当串口0忙的时候等待，不忙的时候再发送传进来的字符
-	//while(__HAL_UART_GET_FLAG(&TJC_UART, UART_FLAG_TXE) == RESET);	//等待发送完毕
-	while(__HAL_UART_GET_FLAG(&TJC_UART, UART_FLAG_TC) == RESET);
-    //发送单个字符
-	HAL_UART_Transmit_IT(&TJC_UART, &ch2, 1);
+    // USART2 开启接收中断后常处于 BUSY_RX，不能用 HAL_UART_GetState()==READY 作为发送前置条件。
+    // 这里直接阻塞发送 1 字节，避免“串口2收得到但发不出去”。
+    HAL_UART_Transmit(&TJC_UART, &ch2, 1, 10);
 	return;
 }
 

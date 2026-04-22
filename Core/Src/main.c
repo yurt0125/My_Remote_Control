@@ -18,13 +18,16 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "cmsis_os.h"
+#include "adc.h"
+#include "dma.h"
+#include "tim.h"
 #include "usart.h"
 #include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "tjc_usart_hmi.h"
-#define FRAME_LENGTH 7
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -50,6 +53,7 @@
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
+void MX_FREERTOS_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -88,93 +92,35 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_DMA_Init();
   MX_USART2_UART_Init();
+  MX_USART1_UART_Init();
+  MX_ADC1_Init();
+  MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
-	initRingBuffer();		//��ʼ�����λ�����
-	HAL_UART_Receive_IT(&TJC_UART, RxBuffer, 1);	//�򿪴��ڽ����ж�
-	int a = 100;
-	char str[100];
-	uint32_t nowtime = HAL_GetTick();
+//	App_Task_FreeRTOSStart();
   /* USER CODE END 2 */
+
+  /* Init scheduler */
+  osKernelInitialize();  /* Call init function for freertos objects (in cmsis_os2.c) */
+  MX_FREERTOS_Init();
+
+  /* Start scheduler */
+  osKernelStart();
+
+  /* We should never get here as control is now taken by the scheduler */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
 while (1)
 	{
-		if (HAL_GetTick() - nowtime >= 1000)
-		{
-			nowtime = HAL_GetTick();
-
-			sprintf(str, "page1.cnt.val=%d", a);
-			tjc_send_string(str);
-			// sprintf(str, "t0.txt=\"%d\"\xff\xff\xff", a);
-			// tjc_send_string(str);
-			// sprintf(str, "click b0,1\xff\xff\xff");
-			// tjc_send_string(str);
-			// HAL_Delay(50);
-			// sprintf(str, "click b0,0\xff\xff\xff");
-			// tjc_send_string(str);
-
-			a++;
-		}
+		
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-
-		//stm32f103��GND�Ӵ������򴮿ڹ��ߵ�GND,����
-		//stm32f103��TX2(PA2)�Ӵ������򴮿ڹ��ߵ�RX
-		//stm32f103��RX2(PA3)�Ӵ������򴮿ڹ��ߵ�TX
-		//stm32f103��5V�Ӵ�������5V,����Ǵ��ڹ���,���ý�5VҲ����
-		//�������ݸ�ʽ��
-		//��������֡���ȣ�7�ֽ�
-		//֡ͷ     ����1    ����2   ����3       ֡β
-		//0x55     1�ֽ�   1�ֽ�    1�ֽ�     0xffffff
-		//��������01ʱ
-		//֡ͷ     ����1    ����2   ����3       ֡β
-		//0x55     01     led���  led״̬    0xffffff
-		//����1����λ������  printh 55 01 01 00 ff ff ff  ���壺1��led�ر�
-		//����2����λ������  printh 55 01 04 01 ff ff ff  ���壺4��led��
-		//����3����λ������  printh 55 01 00 01 ff ff ff  ���壺0��led��
-		//����4����λ������  printh 55 01 04 00 ff ff ff  ���壺4��led�ر�
-		//��������02��03ʱ
-		//֡ͷ     ����1    ����2   ����3       ֡β
-		//0x55     02/03   ����ֵ    00    0xffffff
-		//����1����λ������  printh 55 02 64 00 ff ff ff  ���壺h0.val=100
-		//����2����λ������  printh 55 02 00 00 ff ff ff  ���壺h0.val=0
-		//����3����λ������  printh 55 03 64 00 ff ff ff  ���壺h1.val=100
-		//����4����λ������  printh 55 03 00 00 ff ff ff  ���壺h1.val=0
-		// �����ڻ��������ڵ���һ֡�ĳ���ʱ
-	// 	while (usize >= FRAME_LENGTH)
-	// 	{
-	// 		// У��֡ͷ֡β�Ƿ�ƥ��
-	// 		if (usize >= FRAME_LENGTH && u(0) == 0x55 && u(4) == 0xff && u(5) == 0xff && u(6) == 0xff)
-	// 		{
-	// 			// ƥ�䣬���н���
-	// 			if (u(1) == 0x01)
-	// 			{
-	// 				sprintf(str, "msg.txt=\"led %d is %s\"", u(2),
-	// 						u(3) ? "on" : "off");
-	// 				tjc_send_string(str);
-	// 			} else if (u(1) == 0x02)
-	// 			{
-	// 				// �·�����h0����������Ϣ
-	// 				sprintf(str, "msg.txt=\"h0.val is %d\"", u(2));
-	// 				tjc_send_string(str);
-	// 			} else if (u(1) == 0x03)
-	// 			{
-	// 				// �·�����h1����������Ϣ
-	// 				sprintf(str, "msg.txt=\"h1.val is %d\"", u(2));
-	// 				tjc_send_string(str);
-	// 			}
-
-	// 			udelete(7); // ɾ��������������
-	// 		} else
-	// 		{
-	// 			// ��ƥ��ɾ��1�ֽ�
-	// 			udelete(1);
-	// 			break;
-	// 		}
-	// 	}
+	// Debug notes:
+	// STM32F103 wiring: GND->GND, TX2(PA2)->screen RX, RX2(PA3)->screen TX, 5V->5V
+	// Frame format: 0x55 + command + data + 0xFF 0xFF 0xFF
 
 	}
   /* USER CODE END 3 */
@@ -188,6 +134,7 @@ void SystemClock_Config(void)
 {
   RCC_OscInitTypeDef RCC_OscInitStruct = {0};
   RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
+  RCC_PeriphCLKInitTypeDef PeriphClkInit = {0};
 
   /** Initializes the RCC Oscillators according to the specified parameters
   * in the RCC_OscInitTypeDef structure.
@@ -214,6 +161,12 @@ void SystemClock_Config(void)
   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
 
   if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_ADC;
+  PeriphClkInit.AdcClockSelection = RCC_ADCPCLK2_DIV6;
+  if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)
   {
     Error_Handler();
   }

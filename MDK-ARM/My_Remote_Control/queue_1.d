@@ -1,0 +1,15 @@
+my_remote_control\queue_1.o: ../Middlewares/Third_Party/FreeRTOS/Source/queue.c
+my_remote_control\queue_1.o: D:\Keil5\ARM\ARMCC5\Bin\..\include\stdlib.h
+my_remote_control\queue_1.o: D:\Keil5\ARM\ARMCC5\Bin\..\include\string.h
+my_remote_control\queue_1.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
+my_remote_control\queue_1.o: D:\Keil5\ARM\ARMCC5\Bin\..\include\stddef.h
+my_remote_control\queue_1.o: D:\Keil5\ARM\ARMCC5\Bin\..\include\stdint.h
+my_remote_control\queue_1.o: ../Core/Inc/FreeRTOSConfig.h
+my_remote_control\queue_1.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h
+my_remote_control\queue_1.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/portable.h
+my_remote_control\queue_1.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h
+my_remote_control\queue_1.o: ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM3/portmacro.h
+my_remote_control\queue_1.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h
+my_remote_control\queue_1.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h
+my_remote_control\queue_1.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h
+my_remote_control\queue_1.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h
